@@ -2,6 +2,13 @@ function D = derMatNonUniform(ord,acc,X,L)
 %DERMATNONUNIFORM constructs derivative matrices
 %    returns an NxN matrix for the derivative of
 %    the order and accuracy specified on the non-uniform grid X.
+%
+%   INPUTS: ord - order of derivative
+%           acc - degree of accuracy
+%             X - grid that the derivative is constructed from
+%             L - length of domain. Should be greater than X(end)
+%
+%   OUTPUTS: D - (sparse) derivative matrix
 
 H0 = X - circshift(X,1);
 H0(1) = H0(1) + L;
@@ -43,14 +50,14 @@ switch ord
                 v_1 = 2./H0./(H0 + H1);
                 v0 = -2./H0./H1;
                 v1 = 2./H1./(H0 + H1);
-                
+
                 % probably can remove these shifts by cancelling with an earlier one
                 v1 = circshift(v1,1);
                 v_1 = circshift(v_1,-1);
-                
+
                 % diagonals
                 D = spdiags([v_1,v0,v1],[-1,0,1],N,N);
-                
+
                 % corners
                 D(1,N) = v_1(N);
                 D(N,1) = v1(1);
@@ -208,7 +215,7 @@ switch ord
                 v1 = (24*(3*H0.^2 + H1.^2 + H2.^2 + H_1.^2 - 6*H0.*H1 - 6*H0.*H2 - 3*H0.*H3 + 2*H1.*H2 + H1.*H3 + H2.*H3 + 4*H0.*H_1 + 2*H0.*H_2 - 4*H1.*H_1 - 2*H1.*H_2 - 4*H2.*H_1 - 2*H2.*H_2 - 2*H3.*H_1 - H3.*H_2 + H_1.*H_2))./(H1.*H2.*(H0 + H1).*(H2 + H3).*(H0 + H1 + H_1).*(H0 + H1 + H_1 + H_2));
                 v2 = (24*(6*H0.*H1 - H1.^2 - H_1.^2 - 3*H0.^2 + 3*H0.*H2 + 3*H0.*H3 - H1.*H2 - H1.*H3 - 4*H0.*H_1 - 2*H0.*H_2 + 4*H1.*H_1 + 2*H1.*H_2 + 2*H2.*H_1 + H2.*H_2 + 2*H3.*H_1 + H3.*H_2 - H_1.*H_2))./(H2.*H3.*(H1 + H2).*(H0 + H1 + H2).*(H0 + H1 + H2 + H_1).*(H0 + H1 + H2 + H_1 + H_2));
                 v3 = (24*(3*H0.^2 + H1.^2 + H_1.^2 - 6*H0.*H1 - 3*H0.*H2 + H1.*H2 + 4*H0.*H_1 + 2*H0.*H_2 - 4*H1.*H_1 - 2*H1.*H_2 - 2*H2.*H_1 - H2.*H_2 + H_1.*H_2))./(H3.*(H2 + H3).*(H1 + H2 + H3).*(H0 + H1 + H2 + H3).*(H0 + H1 + H2 + H3 + H_1).*(H0 + H1 + H2 + H3 + H_1 + H_2));
-                
+
                 % probably can remove these shifts by cancelling with an earlier one
                 v3 = circshift(v3,3);
                 v2 = circshift(v2,2);

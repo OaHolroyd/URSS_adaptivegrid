@@ -8,13 +8,15 @@ function [Z,P,dxmin] = equiMesh(X,W,L,K,d,dxinf,dxsup)
 %                non-negative.
 %            L - length of domain. Should be greater than X(end)
 %            K - maximum ratio between adjacent spaces
-%            d - value of W at which Nequiv will be 90% of Nsup
+%            d - value of W at which dxmin will be 90% of the way to dxinf.
+%                If d = 0 then dxmin = dxmax
 %        dxinf - limit of dx as W -> infinity
 %        dxsup - value of dx at W = 0
 %
 %
 %   OUTPUTS: Z - output mesh
 %            P - padded version of W (on the same grid W)
+%        dxmin - minimum value of dx
 
 % check weighting function is allowed
 if sum(W<0)>0

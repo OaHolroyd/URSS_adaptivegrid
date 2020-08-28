@@ -1,15 +1,22 @@
-%% IMPLICIT NEWT ADAPTIVE BDF2 EQUIMESH
+%% RECORD ALL
 % Solves the Benney IVP on an adaptive grid. Uses BDF1 for the first timestep
 % and the does the rest using BDF2. Uses 2nd order spatial derivative operators.
-% Adaptive grid with padding as in Kautsky & Nichols 1980
-% INPUTS: see set_parameters.m
+% Adaptive grid with padding as in Kautsky & Nichols 1980. This script saves at
+% every timestep (useful for plotting or debugging).
 %
-% OUTPUTS: Tout - output times
-%          Xout - non-uniform grids at Tout
+%  INPUTS: bparams - Benney PARAMeterS. Path to a .mat file containing the
+%                    solver-independent parameters:
+%                    g -
+%          mparams - Model PARAMeterS. Path to a .mat file containing the
+%                    solver-dependent parameters.
+%
+% OUTPUTS: Xout - non-uniform grids at Tout
 %          Uout - interface height at Xout/Tout
-%          Fout - control/forcing term at Xout/Tout
+%          Fout - forcing term at Xout/Tout
 %          Wout - weighting function at Xout/Tout
-%          Pout - padded weighting function at Xout/Tout
+%          Pout - padded weight at Xout/Tout
+%  elasped_time - CPU time spent on solving (doesn't include setup)
+%             N - number of gridpoints used
 
 %% Paramters
 % load params from file
@@ -142,12 +149,12 @@ for k = 1:MAXITER
     G = calcG(U,F,D1,D2,D3,D4,R,C,cotb);
     delfU = (U - U0 - dt0 * G) - fU;
     fU = fU + delfU;
-    
+
     % stop iterating if close to a solution
     if norm(fU) < ITERACC
         break
     end
-    
+
     % good Broyden method to update J
     J = J + (delfU - J*delU)/sum(delU.*delU) * delU';
 end
@@ -155,7 +162,7 @@ end
 % abort if something has gone wrong
 if sum(isnan(U)) > 0
     elapsed_time = toc;
-    
+
     %remove unused storage
     Tout = Tout(1:jmax);
     Uout = Uout(1:jmax);
@@ -192,7 +199,7 @@ dt_1 = dt0;
 %% Remaining steps (BDF2)
 while t<=Tmax
     F = f(X,U,t); % preliminary control vector update
-    
+
     % update the grid if required
     if isnan(rem(t,GRIDUPDATE)) || rem(t,GRIDUPDATE)<dt
         % update grid
@@ -213,25 +220,25 @@ while t<=Tmax
         D2 = derMatNonUniform(2,3,X,L);
         D3 = derMatNonUniform(3,2,X,L);
         D4 = derMatNonUniform(4,3,X,L); % derivatives on non-uniform grid
-        
+
         % set timestep from dxmin
         dt = c*dxmin;
     end
     Ntotal = Ntotal + N; Ncount = Ncount + 1;
-    
+
     % check if an output is required. If so, adjust dt accordingly
     output = true;
     dt0 = dt;
     t = t+dt0;
-    
-    
+
+
     % Newton/Broyden solver
     G = calcG(U,F,D1,D2,D3,D4,R,C,cotb);
     fU = (-dt0/dt_1/(dt0+dt_1))*U0 + (dt0/dt_1/(dt0+dt_1))*U_1 - G;
 
     Jg = calcJg(U,F,I,D1,D2,D3,D4,R,C,cotb); % Jacobian for G
     J = (2*dt0 + dt_1/dt0/(dt0+dt_1))*I - Jg;
-    
+
     % iterate solver (for at most MAXITER iterations)
     for k = 1:MAXITER
         delU = J\-fU;
@@ -248,7 +255,7 @@ while t<=Tmax
         % good Broyden method to update J
         J = J + (delfU - J*delU)/sum(delU.*delU) * delU';
     end
-    
+
     % abort if something has gone wrong
     if sum(isnan(U)) > 0
         elapsed_time = toc;
@@ -268,7 +275,7 @@ while t<=Tmax
         %save(['saved_data/',filename],'Tout','Xout','Uout','Fout');
         return
     end
-    
+
     % output
     if output
         jmax = jmax + 1;
@@ -279,12 +286,12 @@ while t<=Tmax
         Pout{jmax-1} = P;
         Tout(jmax) = t;
     end
-    
+
     % store previous iterations
     U_1 = U0;
     U0 = U;
     dt_1 = dt0;
-    
+
     if t>=Tmax || jmax>=Mout
         break
     end

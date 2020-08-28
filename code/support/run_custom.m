@@ -1,5 +1,5 @@
 %% RUN CUSTOM
-% does a single run with a custom setup.
+% Does a single run with a custom setup from test_setup.
 
 test_setup;
 

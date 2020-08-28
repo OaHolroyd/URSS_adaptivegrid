@@ -2,6 +2,12 @@ function D = derMat(order,N,dx)
 %DERMAT constructs derivative matrices
 %    returns an NxN matrix for the derivative of
 %    the order specified with a uniform grid spacing of dx
+%
+%   INPUTS: ord - order of derivative
+%             N - number of gridpoints
+%            dx - (uniform) spacing between gridpoints
+%
+%   OUTPUTS: D - (sparse) derivative matrix
 
 v = ones(N,1);
 
@@ -68,7 +74,7 @@ switch order
         else
             message = ['order of "', num2str(order), '" is not valid'];
         end
-        
+
         error(message);
 end
 

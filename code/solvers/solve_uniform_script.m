@@ -9,7 +9,11 @@
 %
 % OUTPUTS: Xout - non-uniform grids at Tout
 %          Uout - interface height at Xout/Tout
-%          Fout - control/forcing term at Xout/Tout
+%          Fout - forcing term at Xout/Tout
+%          Wout - weighting function at Xout/Tout
+%          Pout - padded weight at Xout/Tout
+%  elasped_time - CPU time spent on solving (doesn't include setup)
+%             N - number of gridpoints used
 
 %% Paramters
 % load params from file

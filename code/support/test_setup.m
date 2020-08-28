@@ -1,6 +1,14 @@
 %% TEST SETUP
-% this should include all of the solver-independent setup parameters to
+% This should include all of the solver-independent setup parameters to
 % standardise across the various runs.
+%
+%     b - angle of plane
+%     R - Reynold's number
+%     C - capilliary number
+%     L - length of spatial domain
+%  Tmax - maximum time
+%     g - initial condition (as a function of X)
+%     f - forcing term (as a function of X,U and T)
 
 name = 'peakwave';
 desc = 'Forced wave with single sharp peak';
@@ -22,7 +30,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 64;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 2.47;
 % f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1) + 1);
 
@@ -34,7 +42,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 64;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 2.55;
 % f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1) + 1);
 
@@ -46,7 +54,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 64;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 2.55;
 % f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1) + 1);
 
@@ -58,7 +66,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 32;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 2.45;
 % f_1 = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1) + 1);
 % f_2 = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x+L/2-v*t)/L)-1)/0.001) - 1) + 1);
@@ -72,7 +80,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 16;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 1;
 % f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1) + 1);
 
@@ -85,7 +93,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 32;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 1.5;
 % f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1) + 1);
 
@@ -97,7 +105,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 32;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 1.5;
 % f = @(x,u,t) -0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x+L/2-v*t)/L)-1)/0.001) - 1) + 1);
 
@@ -109,7 +117,7 @@ f = @(x,u,t) 0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x-v*t)/L)-1)/0.001) - 1
 % L = 32;
 % Tmax = 32;
 % g = @(x) 1 - 0.0 * sin(2*pi*x/L);
-% 
+%
 % v = 2;
 % f = @(x,u,t) -0.2 * (1.0127784694779528 * (exp((cos(2*pi*(x+L/2-v*t)/L)-1)/0.001) - 1) + 1);
 
